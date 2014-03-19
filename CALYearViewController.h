@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  CALDayLayout.h
+//  CALYearViewController.h
 //  iOS Tester
 //
 //  Created by Austin Cherry on 3/18/14.
@@ -10,12 +10,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol CALDayLayoutDelegate <UICollectionViewDelegate>
-
-@end
-
-@interface CALDayLayout : UICollectionViewLayout
-
-@property (nonatomic, weak) id<CALDayLayoutDelegate> delegate;
+@interface CALYearViewController : UICollectionViewController
 
 @end
