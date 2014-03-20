@@ -14,7 +14,7 @@
 
 @end
 
-#define MAX_COUNT 60
+#define MAX_COUNT 200
 #define CELL_ID @"CELL_ID"
 
 @implementation CALYearViewController
@@ -37,9 +37,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSDate *date = [NSDate date];
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    NSDateComponents *comps = [cal components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+    NSInteger currentYear = [comps year];
     
-    //self.collectionView.collectionViewLayout = layout;
-    
+    for(int i = -100; i <= 100; i++)
+    {
+        comps = [cal components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+        [comps setYear:currentYear + i];
+        
+        for(int j = 0; j <= 11; j++)
+        {
+            [comps setDay:1];
+            [comps setMonth:j];
+            date = [cal dateFromComponents:comps];
+            NSRange range = [cal rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:date];
+            NSLog(@"range location %lu, length %lu", range.location, range.length);
+            
+            NSLog(@"date is: %@", date);
+            
+            NSInteger weekdayOfDate = [cal ordinalityOfUnit:NSWeekdayCalendarUnit inUnit:NSWeekCalendarUnit forDate:date];
+            NSInteger numberOfDaysToStartOfCurrentWeek = weekdayOfDate - 1;
+            
+            NSLog(@"Month start day: %lu", numberOfDaysToStartOfCurrentWeek);
+        }
+    }
+
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -49,12 +73,11 @@
     cell.contentView.backgroundColor = cellColor;
     return cell;
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return MAX_COUNT;
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
