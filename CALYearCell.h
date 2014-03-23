@@ -9,7 +9,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #import <UIKit/UIKit.h>
+#import "CALMonthView.h"
 
 @interface CALYearCell : UICollectionViewCell
+
+- (void)setObject:(id)object;
+
+@property(nonatomic, strong)CALMonthView *monthView;
 
 @end

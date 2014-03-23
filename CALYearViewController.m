@@ -10,6 +10,7 @@
 
 #import "CALYearViewController.h"
 #import "CALMonth.h"
+#import "CALYearCell.h"
 
 @interface CALYearViewController ()
 
@@ -43,7 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:CELL_ID];
+    [self.collectionView registerClass:[CALYearCell class] forCellWithReuseIdentifier:CELL_ID];
     [self buildYears];
     
 //    NSDate *date = [NSDate date];
@@ -125,9 +126,12 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
-    UIColor* cellColor = [UIColor colorWithHue:drand48() saturation:1.0 brightness:1.0 alpha:1.0];
-    cell.contentView.backgroundColor = cellColor;
+//    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
+//    UIColor* cellColor = [UIColor colorWithHue:drand48() saturation:1.0 brightness:1.0 alpha:1.0];
+//    cell.contentView.backgroundColor = cellColor;
+    CALYearCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
+    NSArray *months = self.items[indexPath.row];
+    [cell setObject:months];
     return cell;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

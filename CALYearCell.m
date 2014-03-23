@@ -17,14 +17,15 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        self.monthView = [[CALMonthView alloc] initWithFrame:frame];
     }
     return self;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setObject:(id)object
 {
-    
+    NSArray *array = (NSArray*)object;
+    //setup calmonth view with object data.
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @end
