@@ -21,7 +21,7 @@
 @end
 
 #define MAX_COUNT 200
-#define CELL_ID @"CELL_ID"
+#define CELL_ID @"YEAR_CELL"
 
 @implementation CALYearViewController
 
@@ -29,10 +29,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    layout.itemSize = CGSizeMake(100, 100);
-    layout.minimumInteritemSpacing = 10;
-    layout.minimumLineSpacing = 10;
+    //layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
         self.items = [NSMutableArray array];
@@ -44,9 +41,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor orangeColor];
     [self.collectionView registerClass:[CALYearCell class] forCellWithReuseIdentifier:CELL_ID];
-    [self buildYears];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     
+    UICollectionViewFlowLayout *flow = (UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout;
+    flow.itemSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+    flow.minimumInteritemSpacing = 10;
+    flow.minimumLineSpacing = 10;
+    [self buildYears];
 //    NSDate *date = [NSDate date];
 //    NSCalendar *cal = [NSCalendar currentCalendar];
 //    NSDateComponents *comps = [cal components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
@@ -137,7 +140,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSLog(@"item count: %lu", self.items.count);
     return self.items.count;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

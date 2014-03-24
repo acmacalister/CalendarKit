@@ -1,26 +1,27 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  CALYearCell.m
+//  CALMonthCell.m
 //  iOS Tester
 //
-//  Created by Austin Cherry on 3/20/14.
+//  Created by Austin Cherry on 3/24/14.
 //  Copyright (c) 2014 Basement Krew. All rights reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#import "CALYearCell.h"
 #import "CALMonthCell.h"
 #import "CALMonth.h"
+#import "CALDayCell.h"
 
-@interface CALYearCell()
+@interface CALMonthCell()
 
-@property(nonatomic, strong)NSArray *items;
+@property(nonatomic, strong)CALMonth *month;
+@property(nonatomic, strong)NSDateFormatter *dateFormat;
 
 @end
 
-#define CELL_ID @"MONTH_CELL"
+#define CELL_ID @"DAY_CELL"
 
-@implementation CALYearCell
+@implementation CALMonthCell
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithFrame:(CGRect)frame
@@ -29,43 +30,57 @@
     if (self)
     {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(90, 100);
-        layout.minimumInteritemSpacing = 10;
-        layout.minimumLineSpacing = 2;
+        CGFloat pad = 2;
+        layout.itemSize = CGSizeMake(10, 10);
+        layout.minimumInteritemSpacing = pad;
+        layout.minimumLineSpacing = pad*2;
         self.monthView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
         self.monthView.delegate = self;
         self.monthView.dataSource = self;
-        [self.monthView registerClass:[CALMonthCell class] forCellWithReuseIdentifier:CELL_ID];
+        [self.monthView registerClass:[CALDayCell class] forCellWithReuseIdentifier:CELL_ID];
         self.monthView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.monthView];
+        
+        self.monthLabel = [UILabel new];
+        self.monthLabel.textColor = [UIColor redColor];
+        [self.contentView addSubview:self.monthLabel];
+        
+        self.dateFormat = [[NSDateFormatter alloc] init];
+        [self.dateFormat setDateFormat:@"MMM"];
     }
     return self;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setObject:(id)object
 {
-    self.items = (NSArray*)object;
-    //setup calmonth view with object data.
+    self.month = (CALMonth*)object;
+    
+    self.monthLabel.text = [NSString stringWithFormat:@"%@", [self.dateFormat stringFromDate:self.month.date]];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat pad = 10;
-    self.monthView.frame = CGRectMake(pad, 0, self.contentView.bounds.size.width-(pad*2), self.contentView.bounds.size.height); //self.contentView.bounds;
+    
+    float pad = 5;
+    float height = 21;
+    float width = self.contentView.bounds.size.width;
+    
+    self.monthLabel.frame = CGRectMake(0, pad, width, height);
+    height += pad;
+    self.monthView.frame = CGRectMake(0, height, width, self.contentView.bounds.size.height-(height));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CALMonthCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
-    CALMonth *month = self.items[indexPath.row];
-    [cell setObject:month];
+    CALDayCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
+    [cell setObject:@(indexPath.row)];
     return cell;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.items.count;
+    return self.month.daysInMonth.length;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -73,4 +88,5 @@
     return 1;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
 @end

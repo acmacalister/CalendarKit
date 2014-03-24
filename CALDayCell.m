@@ -1,0 +1,41 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  CALDayCell.m
+//  iOS Tester
+//
+//  Created by Austin Cherry on 3/24/14.
+//  Copyright (c) 2014 Basement Krew. All rights reserved.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#import "CALDayCell.h"
+
+@implementation CALDayCell
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.numberLabel = [[UILabel alloc] initWithFrame:frame];
+        UIFontDescriptor *font = [[UIFontDescriptor alloc] initWithFontAttributes:@{}];
+        self.numberLabel.font = [UIFont fontWithDescriptor:font size:8.5];
+        self.numberLabel.textAlignment = NSTextAlignmentCenter;
+        [self.contentView addSubview:self.numberLabel];
+    }
+    return self;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setObject:(id)object
+{
+    NSNumber *number = (NSNumber*)object;
+    self.numberLabel.text = [NSString stringWithFormat:@"%@", number];
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.numberLabel.frame = self.contentView.bounds;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+@end
