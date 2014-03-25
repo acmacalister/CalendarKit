@@ -18,6 +18,7 @@
 @property(nonatomic, strong)NSMutableArray *items;
 @property(nonatomic, strong)NSCalendar *calendar;
 @property(nonatomic, strong)NSDateComponents *comps;
+@property(nonatomic, assign)BOOL isFirst;
 
 @end
 
@@ -44,6 +45,7 @@
     self.view.backgroundColor = [UIColor orangeColor];
     [self.collectionView registerClass:[CALYearCell class] forCellWithReuseIdentifier:CELL_ID];
     self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.showsVerticalScrollIndicator = self.collectionView.showsHorizontalScrollIndicator = NO;
     
     UICollectionViewFlowLayout *flow = (UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout;
     flow.itemSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
@@ -52,8 +54,15 @@
     [self buildYears];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.isFirst = NO;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)buildYears
 {
+    self.isFirst = YES;
     NSDate *date = [NSDate date];
     self.comps = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
     NSInteger currentYear = [self.comps year];
@@ -102,6 +111,10 @@
     [self.items addObject:[CALYear createYear:@([self.comps year]) months:[months copy]]];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark - UICollectionView
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CALYearCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
@@ -120,4 +133,25 @@
     return 1;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark - ScrollView
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(self.isFirst)
+    {
+        NSLog(@"how many times?");
+        return;
+    }
+    if (scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height/2)
+    {
+        for(int i = 0; i < 2; i++)
+            [self.items removeObjectAtIndex:0];
+        [self appendFutureYears:[NSDate date] year:[self.comps year]];
+        [self.collectionView reloadData];
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 @end
