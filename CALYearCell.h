@@ -14,6 +14,7 @@
 
 - (void)setObject:(id)object;
 
+@property(nonatomic, strong)UILabel *yearLabel;
 @property(nonatomic, strong)UICollectionView *monthView;
 
 @end

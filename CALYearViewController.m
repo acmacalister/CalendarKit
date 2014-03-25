@@ -11,6 +11,7 @@
 #import "CALYearViewController.h"
 #import "CALMonth.h"
 #import "CALYearCell.h"
+#import "CALYear.h"
 
 @interface CALYearViewController ()
 
@@ -29,7 +30,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    //layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
         self.items = [NSMutableArray array];
@@ -50,34 +50,6 @@
     flow.minimumInteritemSpacing = 10;
     flow.minimumLineSpacing = 10;
     [self buildYears];
-//    NSDate *date = [NSDate date];
-//    NSCalendar *cal = [NSCalendar currentCalendar];
-//    NSDateComponents *comps = [cal components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-//    NSInteger currentYear = [comps year];
-//    
-//    for(int i = -6; i <= 6; i++)
-//    {
-//        comps = [cal components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-//        [comps setYear:currentYear + i];
-//        
-//        for(int j = 0; j <= 11; j++)
-//        {
-//            
-//            [comps setDay:1];
-//            [comps setMonth:j];
-//            date = [cal dateFromComponents:comps];
-//            NSRange range = [cal rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:date];
-//            NSLog(@"range location %lu, length %lu", range.location, range.length);
-//            
-//            NSLog(@"date is: %@", date);
-//            
-//            NSInteger weekdayOfDate = [cal ordinalityOfUnit:NSWeekdayCalendarUnit inUnit:NSWeekCalendarUnit forDate:date];
-//            NSInteger numberOfDaysToStartOfCurrentWeek = weekdayOfDate - 1;
-//            
-//            NSLog(@"Month start day: %lu", numberOfDaysToStartOfCurrentWeek);
-//        }
-//    }
-
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)buildYears
@@ -86,12 +58,14 @@
     self.comps = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
     NSInteger currentYear = [self.comps year];
     [self appendPastYears:date year:currentYear];
+    [self.comps setYear:currentYear];
+    [self buildMonths:date];
     [self appendFutureYears:date year:currentYear];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)appendFutureYears:(NSDate *)date year:(NSInteger)year
 {
-    for(int i = 0; i < 6; i++)
+    for(int i = 1; i <= 6; i++)
     {
         [self.comps setYear:year + i];
         [self buildMonths:date];
@@ -110,7 +84,7 @@
 - (void)buildMonths:(NSDate *)date
 {
     NSMutableArray *months = [NSMutableArray array];
-    for(int j = 0; j <= 11; j++)
+    for(int j = 1; j <= 12; j++)
     {
         CALMonth *month = [CALMonth new];
         [self.comps setDay:1];
@@ -124,17 +98,15 @@
         month.startDay = weekdayOfDate - 1;
         [months addObject:month];
     }
-    [self.items addObject:months];
+    
+    [self.items addObject:[CALYear createYear:@([self.comps year]) months:[months copy]]];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
-//    UIColor* cellColor = [UIColor colorWithHue:drand48() saturation:1.0 brightness:1.0 alpha:1.0];
-//    cell.contentView.backgroundColor = cellColor;
     CALYearCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
-    NSArray *months = self.items[indexPath.row];
-    [cell setObject:months];
+    CALYear *year = self.items[indexPath.row];
+    [cell setObject:year];
     return cell;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

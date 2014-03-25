@@ -11,10 +11,13 @@
 #import "CALYearCell.h"
 #import "CALMonthCell.h"
 #import "CALMonth.h"
+#import "CALYear.h"
 
 @interface CALYearCell()
 
 @property(nonatomic, strong)NSArray *items;
+@property(nonatomic, strong)NSNumber *currentYear;
+@property(nonatomic, strong)UIView *lineView;
 
 @end
 
@@ -28,8 +31,16 @@
     self = [super initWithFrame:frame];
     if (self)
     {
+        self.yearLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        self.yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+        [self.contentView addSubview:self.yearLabel];
+        
+        self.lineView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.lineView.backgroundColor = [UIColor colorWithRed:225/255.0f green:225/255.0f blue:225/255.0f alpha:1];
+        [self.contentView addSubview:self.lineView];
+        
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(90, 100);
+        layout.itemSize = CGSizeMake(90, 110);
         layout.minimumInteritemSpacing = 10;
         layout.minimumLineSpacing = 2;
         self.monthView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
@@ -44,15 +55,33 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setObject:(id)object
 {
-    self.items = (NSArray*)object;
-    //setup calmonth view with object data.
+    CALYear *year = (CALYear*)object;
+    self.items = year.months;
+    self.currentYear = year.currentYear;
+    
+    self.yearLabel.text = [NSString stringWithFormat:@"%@", year.currentYear];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
     CGFloat pad = 10;
-    self.monthView.frame = CGRectMake(pad, 0, self.contentView.bounds.size.width-(pad*2), self.contentView.bounds.size.height); //self.contentView.bounds;
+    float top = 0;
+    float height = 21;
+    float width = self.contentView.bounds.size.width;
+    
+    self.yearLabel.frame = CGRectMake(pad, pad, width-(pad*2), height);
+    top += height+pad;
+    
+    CGFloat lineHeight = 1;
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
+        lineHeight = 0.5;
+    self.lineView.frame = CGRectMake(pad, top, width, lineHeight);
+    
+    height += lineHeight+pad;
+    
+    self.monthView.frame = CGRectMake(pad, top, width-(pad*2), self.contentView.bounds.size.height-(height-lineHeight));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
