@@ -74,13 +74,17 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CALDayCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
-    if(indexPath.row > self.month.startDay)
+    if(self.month.startDay == 6)
+        [cell setObject:@(indexPath.row+1)];
+    else if(indexPath.row > self.month.startDay)
         [cell setObject:@(indexPath.row - self.month.startDay)];
     return cell;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if(self.month.startDay == 6)
+        return self.month.daysInMonth.length;
     return self.month.daysInMonth.length + self.month.startDay + 1;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
