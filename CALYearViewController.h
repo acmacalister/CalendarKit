@@ -9,7 +9,10 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #import <UIKit/UIKit.h>
+#import "CALBaseViewController.h"
 
-@interface CALYearViewController : UICollectionViewController
+@interface CALYearViewController : CALBaseViewController
+
++ (UINavigationController *)CALNavigationController;
 
 @end

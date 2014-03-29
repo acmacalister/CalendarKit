@@ -49,6 +49,7 @@
         [self.monthView registerClass:[CALMonthCell class] forCellWithReuseIdentifier:CELL_ID];
         self.monthView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.monthView];
+        self.monthView.userInteractionEnabled = NO;
     }
     return self;
 }

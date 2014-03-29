@@ -12,10 +12,13 @@
 #import "CALMonth.h"
 #import "CALYearCell.h"
 #import "CALYear.h"
+#import "CALMonthViewController.h"
+#import "DEAnimatedTransitioning.h"
 
 @interface CALYearViewController ()
 
 @property(nonatomic, strong)NSMutableArray *items;
+@property(nonatomic, strong)NSArray *months;
 @property(nonatomic, strong)NSCalendar *calendar;
 @property(nonatomic, strong)NSDateComponents *comps;
 @property(nonatomic, assign)BOOL isFirst;
@@ -27,6 +30,13 @@
 
 @implementation CALYearViewController
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
++ (UINavigationController *)CALNavigationController
+{
+    CALYearViewController *yearVC = [CALYearViewController new];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:yearVC];
+    return navigationController;
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,7 +52,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor orangeColor];
+    
+    self.collectionView.dataSource = self;
     [self.collectionView registerClass:[CALYearCell class] forCellWithReuseIdentifier:CELL_ID];
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.showsVerticalScrollIndicator = self.collectionView.showsHorizontalScrollIndicator = NO;
@@ -54,10 +65,11 @@
     [self buildYears];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
--(void)viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     self.isFirst = NO;
+    [self.collectionView reloadData];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)buildYears
@@ -133,6 +145,27 @@
     return 1;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CALYear *year = self.items[indexPath.row];
+    self.months = year.months;
+    CALMonthViewController *monthVC = [[CALMonthViewController alloc] initWithMonth:self.months];
+    
+    id <UIViewControllerTransitioningDelegate> myDelegate = [DETransitioningDelegate new];
+    monthVC.transitioningDelegate = myDelegate;
+    monthVC.useLayoutToLayoutNavigationTransitions = YES;
+    
+    [self.navigationController pushViewController:monthVC animated:YES];
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//- (UICollectionViewController*)nextViewControllerAtPoint:(CGPoint)p
+//{
+//
+//    
+//    nextCollectionViewController.useLayoutToLayoutNavigationTransitions = YES;
+//    return nextCollectionViewController;
+//}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - ScrollView
 
@@ -152,6 +185,4 @@
         [self.collectionView reloadData];
     }
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 @end
