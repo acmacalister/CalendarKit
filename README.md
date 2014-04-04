@@ -37,5 +37,5 @@ CalendarKit is license under the Apache License.
 # Contact #
 
 ### Austin Cherry ###
-* https://github.com/AC_Macalister
+* https://github.com/austiniam
 * http://twitter.com/AC_Macalister
