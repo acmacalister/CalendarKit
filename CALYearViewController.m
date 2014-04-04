@@ -13,7 +13,7 @@
 #import "CALYearCell.h"
 #import "CALYear.h"
 #import "CALMonthViewController.h"
-#import "DEAnimatedTransitioning.h"
+#import "CALYearTransitionController.h"
 
 @interface CALYearViewController ()
 
@@ -22,6 +22,7 @@
 @property(nonatomic, strong)NSCalendar *calendar;
 @property(nonatomic, strong)NSDateComponents *comps;
 @property(nonatomic, assign)BOOL isFirst;
+//@property(nonatomic, strong)CALYearTransitionController *transitionController;
 
 @end
 
@@ -151,20 +152,11 @@
     self.months = year.months;
     CALMonthViewController *monthVC = [[CALMonthViewController alloc] initWithMonth:self.months];
     
-    id <UIViewControllerTransitioningDelegate> myDelegate = [DETransitioningDelegate new];
-    monthVC.transitioningDelegate = myDelegate;
-    monthVC.useLayoutToLayoutNavigationTransitions = YES;
-    
+    //self.transitionController = [CALYearTransitionController new];
+    //smonthVC.transitioningDelegate = self.transitionController;
+    //monthVC.useLayoutToLayoutNavigationTransitions = YES;
     [self.navigationController pushViewController:monthVC animated:YES];
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//- (UICollectionViewController*)nextViewControllerAtPoint:(CGPoint)p
-//{
-//
-//    
-//    nextCollectionViewController.useLayoutToLayoutNavigationTransitions = YES;
-//    return nextCollectionViewController;
-//}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - ScrollView
@@ -185,4 +177,5 @@
         [self.collectionView reloadData];
     }
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////
 @end

@@ -12,10 +12,6 @@
 
 @interface CALYearTransitionController ()
 
-@property (nonatomic) UICollectionViewTransitionLayout *transitionLayout;
-@property (nonatomic) id <UIViewControllerContextTransitioning> context;
-@property (nonatomic) CGFloat initialPinchDistance;
-
 @end
 
 @implementation CALYearTransitionController
@@ -25,8 +21,6 @@
 {
     self = [super init];
     if (self) {
-        UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-        [collectionView addGestureRecognizer:pinchGesture];
         self.collectionView = collectionView;
     }
     return self;
@@ -34,6 +28,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
 {
+    NSLog(@"do cool stufff!");
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -41,7 +36,22 @@
     return 1.0;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)startInteractiveTransition:(id <UIViewControllerContextTransitioning>)transitionContext
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                   presentingController:(UIViewController *)presenting
+                                                                       sourceController:(UIViewController *)source
+{
+    NSLog(@"oh yeah");
+    return nil;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    NSLog(@"making it happen");
+    return nil;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*- (void)startInteractiveTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     self.context = transitionContext;
     UICollectionViewController* fromCollectionViewController = (UICollectionViewController*)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
@@ -132,6 +142,6 @@
         [self updateWithProgress:progress];
         return;
     }
-}
+} */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @end

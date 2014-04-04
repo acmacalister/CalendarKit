@@ -40,11 +40,14 @@
     [self.collectionView registerClass:[CALMonthCell class] forCellWithReuseIdentifier:CELL_ID];
     self.collectionView.dataSource = self;
     self.collectionView.showsVerticalScrollIndicator = self.collectionView.showsHorizontalScrollIndicator = NO;
+    self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.showsVerticalScrollIndicator = self.collectionView.showsHorizontalScrollIndicator = NO;
     
     UICollectionViewFlowLayout *flow = (UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout;
-    flow.itemSize = CGSizeMake(400, 400);
+    flow.itemSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
     flow.minimumInteritemSpacing = 10;
     flow.minimumLineSpacing = 10;
+    [self.collectionView reloadData];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
