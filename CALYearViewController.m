@@ -12,17 +12,15 @@
 #import "CALMonth.h"
 #import "CALYearCell.h"
 #import "CALYear.h"
+#import "CALMonth.h"
 #import "CALMonthViewController.h"
-#import "CALYearTransitionController.h"
 
 @interface CALYearViewController ()
 
 @property(nonatomic, strong)NSMutableArray *items;
-@property(nonatomic, strong)NSArray *months;
 @property(nonatomic, strong)NSCalendar *calendar;
 @property(nonatomic, strong)NSDateComponents *comps;
 @property(nonatomic, assign)BOOL isFirst;
-//@property(nonatomic, strong)CALYearTransitionController *transitionController;
 
 @end
 
@@ -132,6 +130,7 @@
 {
     CALYearCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
     CALYear *year = self.items[indexPath.row];
+    cell.delegate = (id<CALYearCellDelegate>)self;
     [cell setObject:year];
     return cell;
 }
@@ -146,15 +145,15 @@
     return 1;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+
+#pragma mark - CALYearCellDelegate
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+-(void)didSelectMonth:(CALMonth*)month
 {
-    CALYear *year = self.items[indexPath.row];
-    self.months = year.months;
-    CALMonthViewController *monthVC = [[CALMonthViewController alloc] initWithMonth:self.months];
-    
-    //self.transitionController = [CALYearTransitionController new];
-    //smonthVC.transitioningDelegate = self.transitionController;
+    CALMonthViewController *monthVC = [[CALMonthViewController alloc] initWithMonth:month];
     //monthVC.useLayoutToLayoutNavigationTransitions = YES;
+    
     [self.navigationController pushViewController:monthVC animated:YES];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,10 +164,8 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if(self.isFirst)
-    {
-        NSLog(@"how many times?");
         return;
-    }
+    
     if (scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height/2)
     {
         for(int i = 0; i < 2; i++)

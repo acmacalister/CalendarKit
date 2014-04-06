@@ -14,7 +14,7 @@
 
 @interface CALMonthViewController ()
 
-@property(nonatomic, strong)NSArray *items;
+@property(nonatomic, strong)CALMonth *month;
 
 @end
 
@@ -23,12 +23,12 @@
 @implementation CALMonthViewController
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-- (id)initWithMonth:(NSArray *)months
+- (id)initWithMonth:(CALMonth *)month
 {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        self.items = months;
+        self.month = month;
     }
     return self;
 }
@@ -36,7 +36,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"loading month view");
     [self.collectionView registerClass:[CALMonthCell class] forCellWithReuseIdentifier:CELL_ID];
     self.collectionView.dataSource = self;
     self.collectionView.showsVerticalScrollIndicator = self.collectionView.showsHorizontalScrollIndicator = NO;
@@ -47,21 +46,19 @@
     flow.itemSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
     flow.minimumInteritemSpacing = 10;
     flow.minimumLineSpacing = 10;
-    [self.collectionView reloadData];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CALMonthCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
-    CALMonth *month = self.items[indexPath.row];
-    [cell setObject:month];
+    [cell setObject:self.month];
     return cell;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 12;
+    return 1;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

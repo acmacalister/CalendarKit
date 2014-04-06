@@ -18,7 +18,7 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    NSLog(@"Called transition!s");
+    NSLog(@"Called transition");
     return nil;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

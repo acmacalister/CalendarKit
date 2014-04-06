@@ -39,6 +39,7 @@
         self.monthView.dataSource = self;
         [self.monthView registerClass:[CALDayCell class] forCellWithReuseIdentifier:CELL_ID];
         self.monthView.backgroundColor = [UIColor clearColor];
+        self.monthView.userInteractionEnabled = NO;
         [self.contentView addSubview:self.monthView];
         
         self.monthLabel = [UILabel new];
