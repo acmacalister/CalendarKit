@@ -14,4 +14,9 @@
 
 + (id)sharedDateManager;
 
+- (void)buildYears;
+- (void)appendFutureYears:(NSDate *)date year:(NSInteger)year;
+- (void)appendPastYears:(NSDate *)date year:(NSInteger)year;
+- (void)buildMonths:(NSDate *)date;
+
 @end
