@@ -14,19 +14,28 @@
 
 @interface DateManager ()
 
-@property(nonatomic, strong)NSMutableArray *dates;
+@property(nonatomic, strong)NSMutableArray *items;
 @property(nonatomic, strong)NSCalendar *calendar;
 @property(nonatomic, strong)NSDateComponents *comps;
+@property(nonatomic, strong)NSDate *now;
+@property(nonatomic)NSInteger currentYear;
+@property(nonatomic)NSInteger lastPastYear;
+@property(nonatomic)NSInteger lastFutureYear;
+@property(nonatomic)BOOL isFirst;
 
 @end
 
 @implementation DateManager
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)init
 {
     if(self = [super init])
     {
         self.calendar = [NSCalendar currentCalendar];
+        self.items = [NSMutableArray array];
+        self.isFirst = YES;
+        [self buildYears];
     }
     return self;
 }
@@ -43,31 +52,51 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)buildYears
 {
-    //self.isFirst = YES;
-    NSDate *date = [NSDate date];
-    self.comps = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
-    NSInteger currentYear = [self.comps year];
-    [self appendPastYears:date year:currentYear];
-    [self.comps setYear:currentYear];
-    [self buildMonths:date];
-    [self appendFutureYears:date year:currentYear];
+    self.now = [NSDate date];
+    self.comps = [self.calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self.now];
+    self.currentYear = [self.comps year];
+    self.lastFutureYear = (self.currentYear + 6);
+    self.lastPastYear = (self.currentYear - 6);
+    [self appendPastYears];
+    [self.comps setYear:self.currentYear];
+    [self buildMonths:self.now];
+    [self appendFutureYears];
+    self.isFirst = NO;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)appendFutureYears:(NSDate *)date year:(NSInteger)year
+- (void)appendFutureYears
 {
     for(int i = 1; i <= 6; i++)
     {
-        [self.comps setYear:year + i];
-        [self buildMonths:date];
+        if(self.isFirst)
+        {
+            [self.comps setYear:self.currentYear + i];
+            [self buildMonths:self.now];
+        }
+        else
+        {
+            [self.comps setYear:self.lastFutureYear += 1];
+            [self buildMonths:self.now];
+            //[self.items removeObjectAtIndex:0];
+        }
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)appendPastYears:(NSDate *)date year:(NSInteger)year
+- (void)appendPastYears
 {
     for(int i = -6; i < 0; i++)
     {
-        [self.comps setYear:year + i];
-        [self buildMonths:date];
+        if(self.isFirst)
+        {
+            [self.comps setYear:self.currentYear + i];
+            [self buildMonths:self.now];
+        }
+        else
+        {
+            [self.comps setYear:self.lastPastYear += i];
+            [self buildMonths:self.now];
+            //[self.items removeObjectAtIndex:self.items.count-1];
+        }
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +118,12 @@
         [months addObject:month];
     }
     
-    [self.dates addObject:[CALYear createYear:@([self.comps year]) months:[months copy]]];
+    [self.items addObject:[CALYear createYear:@([self.comps year]) months:[months copy]]];
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSArray *)dates
+{
+    return [self.items copy];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @end

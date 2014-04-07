@@ -12,11 +12,11 @@
 
 @interface DateManager : NSObject
 
+@property(nonatomic, strong, readonly)NSArray *dates;
+
 + (id)sharedDateManager;
 
-- (void)buildYears;
-- (void)appendFutureYears:(NSDate *)date year:(NSInteger)year;
-- (void)appendPastYears:(NSDate *)date year:(NSInteger)year;
-- (void)buildMonths:(NSDate *)date;
+- (void)appendFutureYears;
+- (void)appendPastYears;
 
 @end
