@@ -10,6 +10,12 @@
 
 #import "CALDayCell.h"
 
+@interface CALDayCell ()
+
+@property(nonatomic, strong)UIFontDescriptor *font;
+
+@end
+
 @implementation CALDayCell
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,8 +24,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.numberLabel = [[UILabel alloc] initWithFrame:frame];
-        UIFontDescriptor *font = [[UIFontDescriptor alloc] initWithFontAttributes:@{}];
-        self.numberLabel.font = [UIFont fontWithDescriptor:font size:8.5];
+        self.font = [[UIFontDescriptor alloc] initWithFontAttributes:@{}];
         self.numberLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:self.numberLabel];
     }
@@ -35,6 +40,12 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    float size = 8.5;
+    if(self.isMonth)
+        size = 17;
+    
+    self.numberLabel.font = [UIFont fontWithDescriptor:self.font size:size];
     self.numberLabel.frame = self.contentView.bounds;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

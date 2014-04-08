@@ -16,5 +16,6 @@
 
 @property(nonatomic, strong)UICollectionView *monthView;
 @property(nonatomic, strong)UILabel *monthLabel;
+@property(nonatomic)BOOL isMonth;
 
 @end

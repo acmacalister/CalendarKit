@@ -30,10 +30,6 @@
     if (self)
     {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        CGFloat pad = 2;
-        layout.itemSize = CGSizeMake(10, 10);
-        layout.minimumInteritemSpacing = pad;
-        layout.minimumLineSpacing = pad*2;
         self.monthView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
         self.monthView.delegate = self;
         self.monthView.dataSource = self;
@@ -63,6 +59,19 @@
 {
     [super layoutSubviews];
     
+    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.monthView.collectionViewLayout;
+    CGFloat itemPad = 2;
+    NSInteger sizeWidth = 10, sizeHeight = 10;
+    if(self.isMonth)
+    {
+        itemPad = 10;
+        sizeWidth = 20;
+        sizeHeight = sizeWidth*2;
+    }
+    layout.itemSize = CGSizeMake(sizeWidth, sizeHeight);
+    layout.minimumInteritemSpacing = itemPad;
+    layout.minimumLineSpacing = itemPad*2;
+
     float pad = 5;
     float height = 21;
     float width = self.contentView.bounds.size.width;
@@ -75,6 +84,8 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CALDayCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELL_ID forIndexPath:indexPath];
+    if(self.isMonth)
+        cell.isMonth = YES;
     if(self.month.startDay == 6)
         [cell setObject:@(indexPath.row+1)];
     else if(indexPath.row > self.month.startDay)

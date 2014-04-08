@@ -15,5 +15,6 @@
 - (void)setObject:(id)object;
 
 @property(nonatomic, strong)UILabel *numberLabel;
+@property(nonatomic)BOOL isMonth;
 
 @end
