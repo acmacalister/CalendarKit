@@ -25,6 +25,7 @@
 
 #define MAX_COUNT 200
 #define CELL_ID @"YEAR_CELL"
+#define OFFSET 160
 
 @implementation CALYearViewController
 
@@ -60,6 +61,12 @@
     flow.itemSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
     flow.minimumInteritemSpacing = 10;
     flow.minimumLineSpacing = 10;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.collectionView.contentOffset = CGPointMake(0, (self.view.frame.size.height * 5) + OFFSET + self.view.frame.size.height/2);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)viewDidAppear:(BOOL)animated
@@ -116,6 +123,14 @@
     {
         [self.dateManager appendFutureYears];
         [self.collectionView reloadData];
+    }
+    else if(scrollView.contentOffset.y < self.view.frame.size.height/2 && scrollView.contentOffset.y > 0)
+    {
+        [self.dateManager appendPastYears];
+        [self.collectionView reloadData];
+        CGPoint point = scrollView.contentOffset;
+        point.y += ((self.view.frame.size.height * 5) + OFFSET + self.view.frame.size.height/2);
+        [scrollView setContentOffset:point animated:NO];
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

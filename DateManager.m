@@ -59,7 +59,7 @@
     self.lastPastYear = (self.currentYear - 6);
     [self appendPastYears];
     [self.comps setYear:self.currentYear];
-    [self buildMonths:self.now];
+    [self buildMonths:self.now future:YES];
     [self appendFutureYears];
     self.isFirst = NO;
 }
@@ -71,12 +71,12 @@
         if(self.isFirst)
         {
             [self.comps setYear:self.currentYear + i];
-            [self buildMonths:self.now];
+            [self buildMonths:self.now future:YES];
         }
         else
         {
             [self.comps setYear:self.lastFutureYear += 1];
-            [self buildMonths:self.now];
+            [self buildMonths:self.now future:YES];
             //[self.items removeObjectAtIndex:0];
         }
     }
@@ -89,18 +89,18 @@
         if(self.isFirst)
         {
             [self.comps setYear:self.currentYear + i];
-            [self buildMonths:self.now];
+            [self buildMonths:self.now future:YES];
         }
         else
         {
-            [self.comps setYear:self.lastPastYear += i];
-            [self buildMonths:self.now];
+            [self.comps setYear:self.lastPastYear -= 1];
+            [self buildMonths:self.now future:NO];
             //[self.items removeObjectAtIndex:self.items.count-1];
         }
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)buildMonths:(NSDate *)date
+- (void)buildMonths:(NSDate *)date future:(BOOL)future
 {
     NSMutableArray *months = [NSMutableArray array];
     for(int j = 1; j <= 12; j++)
@@ -118,7 +118,10 @@
         [months addObject:month];
     }
     
-    [self.items addObject:[CALYear createYear:@([self.comps year]) months:[months copy]]];
+    if(future)
+        [self.items addObject:[CALYear createYear:@([self.comps year]) months:[months copy]]];
+    else
+        [self.items insertObject:[CALYear createYear:@([self.comps year]) months:[months copy]] atIndex:0];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSArray *)dates
