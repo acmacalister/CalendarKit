@@ -62,23 +62,30 @@
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.monthView.collectionViewLayout;
     CGFloat itemPad = 2;
     NSInteger sizeWidth = 10, sizeHeight = 10;
+    float pad = 5;
+    float widthPad = 0;
+    float height = 21;
+    float width = self.contentView.bounds.size.width;
+    float monthLabelPad = 0;
+    
     if(self.isMonth)
     {
         itemPad = 10;
-        sizeWidth = 20;
+        sizeWidth = 30;
         sizeHeight = sizeWidth*2;
+        widthPad = 20;
+        if(self.month.startDay < 6)
+            monthLabelPad = (self.month.startDay * (itemPad + sizeWidth)) + widthPad*3;
+        else
+            monthLabelPad = widthPad;
     }
     layout.itemSize = CGSizeMake(sizeWidth, sizeHeight);
     layout.minimumInteritemSpacing = itemPad;
     layout.minimumLineSpacing = itemPad*2;
-
-    float pad = 5;
-    float height = 21;
-    float width = self.contentView.bounds.size.width;
     
-    self.monthLabel.frame = CGRectMake(0, pad, width, height);
+    self.monthLabel.frame = CGRectMake(monthLabelPad, pad, width, height);
     height += pad;
-    self.monthView.frame = CGRectMake(0, height, width, self.contentView.bounds.size.height-(height));
+    self.monthView.frame = CGRectMake(widthPad, height, width-(widthPad*2), self.contentView.bounds.size.height-(height));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
