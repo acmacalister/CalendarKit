@@ -11,6 +11,7 @@
 #import "CALMonthCell.h"
 #import "CALMonth.h"
 #import "CALDayCell.h"
+#import "CALMonthViewLayout.h"
 
 @interface CALMonthCell()
 
@@ -29,7 +30,7 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        CALMonthViewLayout *layout = [[CALMonthViewLayout alloc] init];
         self.monthView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
         self.monthView.delegate = self;
         self.monthView.dataSource = self;
@@ -59,7 +60,7 @@
 {
     [super layoutSubviews];
     
-    UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout*)self.monthView.collectionViewLayout;
+    CALMonthViewLayout *layout = (CALMonthViewLayout*)self.monthView.collectionViewLayout;
     CGFloat itemPad = 2;
     NSInteger sizeWidth = 10, sizeHeight = 10;
     float pad = 5;

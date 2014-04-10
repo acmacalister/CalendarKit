@@ -14,12 +14,12 @@
 #import "CALYear.h"
 #import "CALMonth.h"
 #import "CALMonthViewController.h"
-#import "DateManager.h"
+#import "CALDateManager.h"
 
 @interface CALYearViewController ()
 
 @property(nonatomic, assign)BOOL isFirst;
-@property(nonatomic, strong)DateManager *dateManager;
+@property(nonatomic, strong)CALDateManager *dateManager;
 
 @end
 
@@ -42,7 +42,7 @@
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     self = [super initWithCollectionViewLayout:layout];
     if (self) {
-        self.dateManager = [DateManager sharedDateManager];
+        self.dateManager = [CALDateManager sharedDateManager];
     }
     return self;
 }

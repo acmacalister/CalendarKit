@@ -8,11 +8,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#import "DateManager.h"
+#import "CALDateManager.h"
 #import "CALYear.h"
 #import "CALMonth.h"
 
-@interface DateManager ()
+@interface CALDateManager ()
 
 @property(nonatomic, strong)NSMutableArray *items;
 @property(nonatomic, strong)NSCalendar *calendar;
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation DateManager
+@implementation CALDateManager
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)init
@@ -43,7 +43,7 @@
 + (id)sharedDateManager
 {
     static dispatch_once_t once;
-    static DateManager *sharedDateManager;
+    static CALDateManager *sharedDateManager;
     dispatch_once(&once, ^{
         sharedDateManager = [[self alloc] init];
     });

@@ -1,22 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  DateManager.h
+//  CALMonthViewLayout.h
 //  iOS Tester
 //
-//  Created by Austin Cherry on 4/5/14.
+//  Created by Austin Cherry on 4/10/14.
 //  Copyright (c) 2014 Basement Krew. All rights reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface DateManager : NSObject
-
-@property(nonatomic, strong, readonly)NSArray *dates;
-
-+ (id)sharedDateManager;
-
-- (void)appendFutureYears;
-- (void)appendPastYears;
+@interface CALMonthViewLayout : UICollectionViewFlowLayout
 
 @end
