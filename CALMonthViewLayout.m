@@ -4,7 +4,7 @@
 //  iOS Tester
 //
 //  Created by Austin Cherry on 4/10/14.
-//  Copyright (c) 2014 Basement Krew. All rights reserved.
+//  Copyright (c) 2014 Vluxe. All rights reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,5 +28,9 @@
     [super prepareLayout];
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
+- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
+{
+    NSMutableArray *array = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
+    return [array copy];
+}
 @end
