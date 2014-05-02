@@ -13,6 +13,6 @@
 
 @interface CALYearViewController : CALBaseViewController
 
-+ (UINavigationController *)CALNavigationController;
++ (UINavigationController *)calNavController;
 
 @end

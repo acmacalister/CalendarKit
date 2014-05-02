@@ -105,7 +105,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"testing");
     CALMonth *month = self.items[indexPath.row];
     if([self.delegate respondsToSelector:@selector(didSelectMonth:)])
         [self.delegate didSelectMonth:month];
