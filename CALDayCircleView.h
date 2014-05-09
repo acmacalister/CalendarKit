@@ -1,0 +1,18 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  CALMonthCircleView.h
+//  iOS Tester
+//
+//  Created by Austin Cherry on 5/9/14.
+//  Copyright (c) 2014 Vluxe. All rights reserved.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#import <UIKit/UIKit.h>
+
+@interface CALDayCircleView : UIView
+
+@property(nonatomic, strong)UIColor *color;
+@property(nonatomic, assign)CGFloat padding;
+
+@end

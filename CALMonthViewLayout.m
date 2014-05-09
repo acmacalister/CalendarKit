@@ -5,6 +5,8 @@
 //
 //  Created by Austin Cherry on 4/10/14.
 //  Copyright (c) 2014 Vluxe. All rights reserved.
+//  Thanks to Mark Pospesel for his tutorial on adding decoration views to UICollectionViews.
+//  https://github.com/mpospese/IntroducingCollectionViews
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +80,7 @@
         }
     }
     
-    //Add our decoration views (shelves)
+    //Add our decoration views (lines)
     NSMutableArray *newArray = [array mutableCopy];
     
     [self.lineRects enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
