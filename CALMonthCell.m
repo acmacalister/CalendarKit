@@ -76,7 +76,7 @@
         sizeHeight = sizeWidth*2;
         widthPad = 20;
         if(self.month.startDay < 6)
-            monthLabelPad = (self.month.startDay * (itemPad + sizeWidth)) + widthPad*3;
+            monthLabelPad = self.month.startDay * (sizeWidth + itemPad) + sizeWidth;
         else
             monthLabelPad = widthPad;
     }
@@ -96,8 +96,8 @@
         cell.isMonth = YES;
     if(self.month.startDay == 6)
         [cell setObject:@(indexPath.row+1)];
-    else if(indexPath.row > self.month.startDay)
-        [cell setObject:@(indexPath.row - self.month.startDay)];
+    else if(indexPath.row >= self.month.startDay)
+        [cell setObject:@(indexPath.row - self.month.startDay+1)];
     return cell;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@
 {
     if(self.month.startDay == 6)
         return self.month.daysInMonth.length;
-    return self.month.daysInMonth.length + self.month.startDay + 1;
+    return self.month.daysInMonth.length + self.month.startDay; //+1
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

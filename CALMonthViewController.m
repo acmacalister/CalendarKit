@@ -11,10 +11,12 @@
 #import "CALMonthViewController.h"
 #import "CALMonthCell.h"
 #import "CALMonth.h"
+#import "CALMonthLineView.h"
 
-@interface CALMonthViewController ()
+@interface CALMonthViewController ()<UIToolbarDelegate>
 
 @property(nonatomic, strong)CALMonth *month;
+@property(nonatomic, strong)UIToolbar *dayFooter;
 
 @end
 
@@ -46,7 +48,28 @@
     flow.itemSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
     flow.minimumInteritemSpacing = 10;
     flow.minimumLineSpacing = 10;
+    
+    self.dayFooter = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 74, self.view.frame.size.width, 10)];
+    self.dayFooter.delegate = self;
+    self.dayFooter.items = [self footerItems];
+    
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.view addSubview:self.dayFooter];
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.dayFooter removeFromSuperview];
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark - CollectionView Methods
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -68,4 +91,27 @@
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#pragma mark - UIToolBarDelegate
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (UIBarPosition)positionForBar:(id <UIBarPositioning>)bar
+{
+    return UIBarPositionTopAttached;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+- (NSArray *)footerItems
+{
+    NSInteger num = 7;
+    NSMutableArray *items = [NSMutableArray arrayWithCapacity:num];
+    NSArray *days = @[@"S", @"M", @"T", @"W", @"T", @"F", @"S"];
+    for(int i = 0; i < num; i++) {
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:days[i] style:UIBarButtonItemStyleBordered target:nil action:nil];
+        [items addObject:barButton];
+        barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        [items addObject:barButton];
+    }
+    
+    return [items copy];
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 @end
