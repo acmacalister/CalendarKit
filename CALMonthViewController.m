@@ -46,8 +46,8 @@
     
     UICollectionViewFlowLayout *flow = (UICollectionViewFlowLayout*)self.collectionView.collectionViewLayout;
     flow.itemSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
-    flow.minimumInteritemSpacing = 10;
-    flow.minimumLineSpacing = 10;
+    //flow.minimumInteritemSpacing = 10;
+    //flow.minimumLineSpacing = 10;
     
     self.dayFooter = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 74, self.view.frame.size.width, 10)];
     self.dayFooter.delegate = self;
@@ -102,10 +102,16 @@
 - (NSArray *)footerItems
 {
     NSInteger num = 7;
-    NSMutableArray *items = [NSMutableArray arrayWithCapacity:num];
+    NSMutableArray *items = [NSMutableArray arrayWithCapacity:num*2];
     NSArray *days = @[@"S", @"M", @"T", @"W", @"T", @"F", @"S"];
+    
+    NSDictionary *buttonAttrs = @{
+                                  NSFontAttributeName: [UIFont fontWithDescriptor:[UIFontDescriptor fontDescriptorWithFontAttributes:@{}] size:11],
+                                  NSForegroundColorAttributeName: [UIColor blackColor]
+                                };
     for(int i = 0; i < num; i++) {
         UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:days[i] style:UIBarButtonItemStyleBordered target:nil action:nil];
+        [barButton setTitleTextAttributes:buttonAttrs forState:UIControlStateNormal];
         [items addObject:barButton];
         barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         [items addObject:barButton];

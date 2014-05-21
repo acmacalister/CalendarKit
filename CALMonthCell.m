@@ -71,10 +71,11 @@
     
     if(self.isMonth)
     {
-        itemPad = 10;
-        sizeWidth = 30;
+        height = 50;
+        itemPad = 20;
+        sizeWidth = 25;
         sizeHeight = sizeWidth*2;
-        widthPad = 20;
+        widthPad = 10;
         if(self.month.startDay < 6)
             monthLabelPad = self.month.startDay * (sizeWidth + itemPad) + sizeWidth;
         else
@@ -82,9 +83,9 @@
     }
     layout.itemSize = CGSizeMake(sizeWidth, sizeHeight);
     layout.minimumInteritemSpacing = itemPad;
-    layout.minimumLineSpacing = itemPad*2;
+    layout.minimumLineSpacing = itemPad;
     
-    self.monthLabel.frame = CGRectMake(monthLabelPad, pad, width, height);
+    self.monthLabel.frame = CGRectMake(monthLabelPad, pad*2, width, height);
     height += pad;
     self.monthView.frame = CGRectMake(widthPad, height, width-(widthPad*2), self.contentView.bounds.size.height-(height));
 }
